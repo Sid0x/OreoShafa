@@ -11,7 +11,6 @@ import constants
 import secretConstants
 import logging
 
-
 init_logger()
 
 bot = telegram.Bot(secretConstants.TOKEN)
@@ -21,13 +20,17 @@ logging.info(constants.START_APPLICATION_OREO)
 while True:
     logging.info(constants.START_SEARCH_NEW_ITEMS)
 
-    isNewItemExist = False
+    isNewItemExist = True
     newItems = []
     oldItems = []
+    # i = 1
 
     if os.path.exists(constants.OLD_ITEMS_FILE_NAME) and os.stat(constants.OLD_ITEMS_FILE_NAME).st_size != 0:
         oldItems = read_old_items()
 
+    # while True:
+    # response = requests.get(url=secretConstants.SHAFA_PARSE_URL + constants.AND + constants.PAGE_NUMBER + str(i),
+    #                         headers=constants.HEADERS)
     response = requests.get(url=secretConstants.SHAFA_PARSE_URL,
                             headers=constants.HEADERS)
 
@@ -36,12 +39,15 @@ while True:
     items = shafaPageSoup.find_all(constants.DIV,
                                    class_=constants.B_TILE_ITEM)
 
+    # if len(items) == 0:
+    #     break
+
     for item in items:
         productId = get_product_id(item)
 
         newItems.append(productId)
 
-        if len(oldItems) > 0 and productId not in oldItems:
+        if len(oldItems) > 0 and isNewItemExist and productId not in oldItems:
             price = get_price(item)
             link = get_link_object(item)
             linkTitle = link[constants.LINK_TITLE]
@@ -57,11 +63,14 @@ while True:
                                                  baitWord=random.choice(constants.baitWords)),
                 parse_mode=ParseMode.HTML
             )
-            isNewItemExist = True
             time.sleep(3)
+        else:
+            isNewItemExist = False
 
-    if not isNewItemExist:
-        logging.info(constants.NEW_ITEMS_NOT_FOUND)
+        # i += 1
+        # time.sleep(1)
+
+    logging.info(constants.END_OF_SEARCH + constants.COMA + str(len(newItems)) + constants.ANALYZED)
 
     write_old_items(newItems)
 

@@ -27,6 +27,11 @@ NEW_ITEMS_NOT_FOUND = 'New items not found'
 LOG_FORMATTER = '%(asctime)s [%(levelname)s] %(message)s'
 LINK_TITLE = 'link_title'
 LINK_HREF = 'link_href'
+AND = '&'
+PAGE_NUMBER = 'page='
+ANALYZED = ' analyzed'
+END_OF_SEARCH = 'End of search'
+COMA = ', '
 USER_AGENT_CONTEXT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36'
 HEADERS = {USER_AGENT: USER_AGENT_CONTEXT}
 baitWords = ['Тиць', 'Хочу хочу хочу', 'Ну пазязя', 'Коханий не дізнається', 'Це остання', 'Ну це точно остання',
